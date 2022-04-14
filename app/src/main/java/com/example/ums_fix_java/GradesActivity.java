@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import Scraper.GradeRow;
+import Scraper.SubjectRow;
 import Scraper.mainVars;
 
 public class GradesActivity extends AppCompatActivity {
@@ -45,7 +46,8 @@ public class GradesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_grades);
         Spinner spinner = findViewById(R.id.spinner);
-        List<String> subjectNames = mainVars.subjectRows.stream().map(x->x.toString()).distinct().collect(Collectors.toList());
+        List<String> subjectNames = mainVars.subjectRows.stream().map(SubjectRow::toString)
+                .distinct().collect(Collectors.toList());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.spinner,

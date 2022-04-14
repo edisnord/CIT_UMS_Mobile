@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class ScrapeWebsite {
@@ -138,7 +139,9 @@ public class ScrapeWebsite {
             gradeRow.setAcademicYear(columns.get(1).text().substring(columns.get(1).text().indexOf('-') + 3));
 
             gradeRow.setGradeType(columns.get(2).text());
+            if(!columns.get(3).text().equals(""))
             gradeRow.setGradeWeight(Float.parseFloat(columns.get(3).text()));
+            if(!columns.get(4).text().equals(""))
             gradeRow.setGrade(Float.parseFloat(columns.get(4).text()));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
@@ -260,7 +263,9 @@ public class ScrapeWebsite {
                     columns.get(1).text().indexOf('-',
                             gradeRow.getClassName().length() + 3)+5));
             gradeRow.setGradeType(columns.get(2).text());
+            if(!columns.get(3).text().equals(""))
             gradeRow.setGradeWeight(Float.parseFloat(columns.get(3).text()));
+            if(!columns.get(4).text().equals(""))
             gradeRow.setGrade(Float.parseFloat(columns.get(4).text()));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
