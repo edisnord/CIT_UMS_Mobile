@@ -45,8 +45,6 @@ public class ScrapeWebsite {
     final String registerUrl = "https://ums.cit.edu.al/eRegisterData_view.php";
     final String profileUrl = "https://ums.cit.edu.al/membership_profile.php";
     final String preRegisterUrl = "https://ums.cit.edu.al/ERegisterStudents_view.php";
-            //"https://ums.cit.edu.al/parent-children.php"; //+
-            //"?ChildTable=eRegisterData&ChildLookupField=RegisteredStudent&SelectedID=938&Page=1&SortBy&SortDirection&Operation=get-records";
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ScrapeWebsite(String username, String password) throws IOException {
@@ -139,10 +137,14 @@ public class ScrapeWebsite {
             gradeRow.setAcademicYear(columns.get(1).text().substring(columns.get(1).text().indexOf('-') + 3));
 
             gradeRow.setGradeType(columns.get(2).text());
-            if(!columns.get(3).text().equals(""))
-            gradeRow.setGradeWeight(Float.parseFloat(columns.get(3).text()));
-            if(!columns.get(4).text().equals(""))
-            gradeRow.setGrade(Float.parseFloat(columns.get(4).text()));
+            if(columns.get(4).text().equals(""))
+                gradeRow.setGradeWeight(0);
+            else
+                gradeRow.setGradeWeight(Float.parseFloat(columns.get(3).text()));
+            if(columns.get(4).text().equals(""))
+                gradeRow.setGrade(0);
+            else
+                gradeRow.setGrade(Float.parseFloat(columns.get(4).text()));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
                 if(!columns.get(5).text().equals(""))
@@ -263,10 +265,14 @@ public class ScrapeWebsite {
                     columns.get(1).text().indexOf('-',
                             gradeRow.getClassName().length() + 3)+5));
             gradeRow.setGradeType(columns.get(2).text());
-            if(!columns.get(3).text().equals(""))
-            gradeRow.setGradeWeight(Float.parseFloat(columns.get(3).text()));
-            if(!columns.get(4).text().equals(""))
-            gradeRow.setGrade(Float.parseFloat(columns.get(4).text()));
+            if(columns.get(4).text().equals(""))
+                gradeRow.setGradeWeight(0);
+            else
+                gradeRow.setGradeWeight(Float.parseFloat(columns.get(3).text()));
+            if(columns.get(4).text().equals(""))
+                gradeRow.setGrade(0);
+            else
+                gradeRow.setGrade(Float.parseFloat(columns.get(4).text()));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
                 if(!columns.get(5).text().equals(""))
