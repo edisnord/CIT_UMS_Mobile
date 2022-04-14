@@ -12,5 +12,7 @@
     <string name="LoginButton">Login</string>
     <string name="PasswordField">Password</string>
     <string name="UsernameField">Username</string>
-    <string name="WelcomeLabel">Welcome!</string>
+    <string name="WelcomeLabel">Please log in with your UMS credentials</string>
+    <string name="selectGrade">Please select the subject you\'d like to see the grades of:</string>
+    <string name="fetchButton">Fetch grades</string>
 </resources>

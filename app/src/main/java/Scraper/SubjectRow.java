@@ -55,4 +55,9 @@ public class SubjectRow {
     public void setTerm(String term) {
         this.term = term;
     }
+
+    public String toString(){
+        return name;
+    }
+
 }

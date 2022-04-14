@@ -1,6 +1,11 @@
 package Scraper;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.Date;
+import java.util.Optional;
 
 public class GradeRow {
     private String className;
@@ -8,8 +13,13 @@ public class GradeRow {
     private String gradeType;
     private float gradeWeight;
     private float grade;
-    private Date dateTaken;
+    private Optional<Date> dateTaken;
     private String dateRegistered;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    GradeRow(){
+        dateTaken = Optional.empty();
+    }
 
     public float getGrade() {
         return grade;
@@ -19,12 +29,17 @@ public class GradeRow {
         this.grade = grade;
     }
 
-    public Date getDateTaken() {
-        return dateTaken;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String getDateTaken() {
+        String defaultRet = "NO DATA";
+        return dateTaken.map(Date::toString)
+                .map(x->x.substring(0, 10) + " " + x.substring(x.length() - 5, x.length()))
+                .orElse(defaultRet);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setDateTaken(Date dateTaken) {
-        this.dateTaken = dateTaken;
+        this.dateTaken = Optional.ofNullable(dateTaken);
     }
 
     public String getDateRegistered() {
@@ -66,4 +81,9 @@ public class GradeRow {
     public void setGradeWeight(float gradeWeight) {
         this.gradeWeight = gradeWeight;
     }
+
+    public String toString(){
+        return className;
+    }
+
 }
