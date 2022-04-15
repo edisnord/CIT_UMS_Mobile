@@ -6,14 +6,17 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Map;
 
 import Scraper.ScrapeWebsite;
 
@@ -47,18 +50,40 @@ public class MainActivity extends AppCompatActivity {
 
         EditText username = findViewById(R.id.editTextTextPersonName);
         EditText password = findViewById(R.id.editTextTextPassword);
+        CheckBox rememberMe = findViewById(R.id.checkBox);
+        SharedPreferences sharedPreferences = getSharedPreferences("cookie" ,MODE_PRIVATE);
+        String test = sharedPreferences.getString("cookie", "");
+        sharedPreferences.edit().remove("cookie").apply();
 
-        if(!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
-            Scraper.mainVars.scraper = new ScrapeWebsite(username.getText().toString(), password.getText().toString());
-            if(scraper.status) {
-                Intent intent = new Intent(this, GradesActivity.class);
-                startActivity(intent);
-            }
+        String loginUname;
+        String loginPass;
+
+        if(!(sharedPreferences.getString("username","").equals("")
+           || sharedPreferences.getString("password", "").equals(""))){
+            loginUname = sharedPreferences.getString("username","");
+            loginPass = sharedPreferences.getString("password", "");
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_LONG);
-            toast.show();
+            loginUname = username.getText().toString();
+            loginPass = password.getText().toString();
         }
 
-    }
+            if (!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
 
-}
+                Scraper.mainVars.scraper = new ScrapeWebsite(loginUname,
+                        loginPass,
+                        rememberMe.isChecked());
+
+                if (rememberMe.isChecked())
+                    sharedPreferences.edit().putString("username", loginUname)
+                            .putString("password", loginPass).apply();
+
+                if (scraper.status) {
+                    Intent intent = new Intent(this, ProfileActivity.class);
+                    startActivity(intent);
+                }
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }

@@ -2,13 +2,15 @@ package Scraper;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import java.util.Date;
 import java.util.Optional;
 
-public class GradeRow {
+public class GradeRow{
     private String className;
+    private boolean incomplete;
     private String academicYear;
     private String gradeType;
     private float gradeWeight;
@@ -18,7 +20,8 @@ public class GradeRow {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     GradeRow(){
-        dateTaken = Optional.empty();
+        this.dateTaken = Optional.empty();
+        this.incomplete = false;
     }
 
     public float getGrade() {
@@ -33,13 +36,17 @@ public class GradeRow {
     public String getDateTaken() {
         String defaultRet = "NO DATA";
         return dateTaken.map(Date::toString)
-                .map(x->x.substring(0, 10) + " " + x.substring(x.length() - 5, x.length()))
+                .map(x->x.substring(0, 10) + " " + x.substring(x.length() - 5))
                 .orElse(defaultRet);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setDateTaken(Date dateTaken) {
         this.dateTaken = Optional.ofNullable(dateTaken);
+    }
+
+    public boolean isIncomplete(){
+        return incomplete;
     }
 
     public String getDateRegistered() {
@@ -80,10 +87,15 @@ public class GradeRow {
 
     public void setGradeWeight(float gradeWeight) {
         this.gradeWeight = gradeWeight;
+        if(gradeWeight == 0) incomplete = true;
     }
 
     public String toString(){
         return className;
+    }
+
+    public boolean equals(@NonNull GradeRow gradeRow){
+        return gradeRow.getClassName().equals(this.getClassName());
     }
 
 }

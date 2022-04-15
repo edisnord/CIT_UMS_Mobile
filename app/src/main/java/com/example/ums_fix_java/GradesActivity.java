@@ -3,6 +3,7 @@ package com.example.ums_fix_java;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class GradesActivity extends AppCompatActivity {
     double totalAchieved;
     double undefinedPercentage;
 
-    ArrayList<GradeRow> tableRows;
+    List<GradeRow> tableRows;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class GradesActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.N)
     void table(){
         TableLayout table = findViewById(R.id.table);
@@ -97,43 +99,45 @@ public class GradesActivity extends AppCompatActivity {
             table.removeAllViews();
         }
         table.setStretchAllColumns(true);
-        TableRow tbrow0 = new TableRow(this);
-        TextView tv0 = new TextView(this);
-        tv0.setText("Grade Type");
-        tv0.setBackground(getDrawable(R.drawable.cell_header));
-        tbrow0.addView(tv0);
-        TextView tv1 = new TextView(this);
-        tv1.setText("Grade weight");
-        tv1.setBackground(getDrawable(R.drawable.cell_header));
-        tbrow0.addView(tv1);
-        TextView tv2 = new TextView(this);
-        tv2.setText("Your grade");
-        tv2.setBackground(getDrawable(R.drawable.cell_header));
-        tbrow0.addView(tv2);
-        TextView tv3 = new TextView(this);
-        tv3.setText("Date taken");
-        tv3.setBackground(getDrawable(R.drawable.cell_header));
-        tbrow0.addView(tv3);
-        table.addView(tbrow0);
+        TableRow header = new TableRow(this);
+        TextView col1 = new TextView(this);
+        col1.setText("Grade Type");
+        col1.setBackground(getDrawable(R.drawable.cell_header));
+        header.addView(col1);
+        TextView col2 = new TextView(this);
+        col2.setText("Grade weight");
+        col2.setBackground(getDrawable(R.drawable.cell_header));
+        header.addView(col2);
+        TextView col3 = new TextView(this);
+        col3.setText("Your grade");
+        col3.setBackground(getDrawable(R.drawable.cell_header));
+        header.addView(col3);
+        TextView col4 = new TextView(this);
+        col4.setText("Date taken");
+        col4.setBackground(getDrawable(R.drawable.cell_header));
+        header.addView(col4);
+        table.addView(header);
         for (GradeRow gr: tableRows) {
-            TableRow tbrow1 = new TableRow(this);
-            TextView tvr0 = new TextView(this);
-            tvr0.setText(gr.getGradeType());
-            tvr0.setBackground(getDrawable(R.drawable.cell_rows));
-            tbrow1.addView(tvr0);
-            TextView tvr1 = new TextView(this);
-            tvr1.setText(Float.toString(gr.getGradeWeight()));
-            tvr1.setBackground(getDrawable(R.drawable.cell_rows));
-            tbrow1.addView(tvr1);
-            TextView tvr2 = new TextView(this);
-            tvr2.setText(Float.toString(gr.getGrade()));
-            tvr2.setBackground(getDrawable(R.drawable.cell_rows));
-            tbrow1.addView(tvr2);
-            TextView tvr3 = new TextView(this);
-            tvr3.setText(gr.getDateTaken());
-            tvr3.setBackground(getDrawable(R.drawable.cell_rows));
-            tbrow1.addView(tvr3);
-            table.addView(tbrow1);
+            TableRow tabRow = new TableRow(this);
+            TextView tabCol1 = new TextView(this);
+            tabCol1.setText(gr.getGradeType());
+            tabCol1.setBackground(getDrawable(R.drawable.cell_rows));
+            tabRow.addView(tabCol1);
+            TextView tabCol2 = new TextView(this);
+            if(gr.getGradeWeight() == 0) tabCol2.setText("Incomplete");
+            else tabCol2.setText(Float.toString(gr.getGradeWeight()));
+            tabCol2.setBackground(getDrawable(R.drawable.cell_rows));
+            tabRow.addView(tabCol2);
+            TextView tabCol3 = new TextView(this);
+            if(gr.getGradeWeight() == 0) tabCol3.setText("Incomplete");
+            else tabCol3.setText(Float.toString(gr.getGrade()));
+            tabCol3.setBackground(getDrawable(R.drawable.cell_rows));
+            tabRow.addView(tabCol3);
+            TextView tabCol4 = new TextView(this);
+            tabCol4.setText(gr.getDateTaken());
+            tabCol4.setBackground(getDrawable(R.drawable.cell_rows));
+            tabRow.addView(tabCol4);
+            table.addView(tabRow);
         }
 
         if(undefinedPercentage > 0){

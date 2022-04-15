@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarprf"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/actionModeCloseDrawable"
+        app:title="Profile" />
+
+    <LinearLayout
+        android:layout_width="318dp"
+        android:layout_height="649dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarprf">
+
+        <TextView
+            android:id="@+id/Nameprf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/Surnameprf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Surname:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select an academic year below:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Spinner
+            android:id="@+id/spinnerprf"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/purple_200"
+            android:dropDownSelector="@drawable/cell_rows"
+            android:minHeight="48dp"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.615"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <Button
+            android:id="@+id/fetchAVG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get average grade" />
+
+        <TextView
+            android:id="@+id/GPAprf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GPA:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/Percentageprf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Percentage:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/Gradeprf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:text="This part of the app takes the average grade of all the subjects where all 100% of points have been logged in an academic year, so it might not be a fully accurate depiction of your grade. This is mostly due to professors not always marking courses as incomplete for some students and some professors simply not using the system at all to add grades. For a more detailed view of subject grades please refer to the subjects menu in this app" />
+
+        <TextView
+            android:id="@+id/ctext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Courses not included in calculation: "
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/nonSubs"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="remember_me"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="" />
+
+    <EditTextPreference
+        android:defaultValue=""
+        android:key="cookie"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title=""
+        />
+
+</PreferenceScreen>
