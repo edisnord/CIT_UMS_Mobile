@@ -1,7 +1,9 @@
 package com.example.ums_fix_java;
 
-import static Scraper.mainVars.scraper;
-
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,13 +12,18 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import Scraper.ScrapeWebsite;
 import Scraper.ScrapeWebsite;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,13 +33,52 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     boolean mode;
     SharedPreferences sharedPreferences;
+    LinearLayout loginForm;
+    ProgressBar progressBar;
+
+    ActivityResultLauncher<Intent> ActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() != 10)
+                    finishAffinity();
+                    else {
+                        try {
+                            ScrapeWebsite.resetScraper();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        button.setOnClickListener(view -> {
+                            ScrapeWebsite.gradeRows = new ArrayList<>();
+                            ScrapeWebsite.subjectRows = new ArrayList<>();
+                            try {
+                                startAppNoRemember();
+                            } catch (IOException e) {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "Wrong login information",
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                    progressBar.setVisibility(View.INVISIBLE);
+                    loginForm.setVisibility(View.VISIBLE);
+                }
+            });
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Fetch session token
+
         mode = false;
+        //Check private storage
         sharedPreferences = getSharedPreferences("userLogin" ,MODE_PRIVATE);
-//        sharedPreferences.edit().remove("username").apply();
+        //Check for user's remembered login info
         if(!(sharedPreferences.getString("username","").equals("")
                 || sharedPreferences.getString("password", "").equals(""))){
             loginUname = sharedPreferences.getString("username","");
@@ -49,20 +95,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.press);
 
-        if(mode){
+        this.loginForm = findViewById(R.id.loginForm);
+        loginForm.setVisibility(View.INVISIBLE);
+        this.progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        new Thread(() -> {
             try {
-                startAppRemember();
+                ScrapeWebsite.getScraper();
+                runOnUiThread(()->{
+                    if(mode){
+                        try {
+                            startAppRemember();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        loginForm.setVisibility(View.VISIBLE);
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }).start();
 
         button.setOnClickListener(view -> {
             try {
                 if(!mode)startAppNoRemember();
-                else;
             } catch (IOException e) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Wrong login information", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Wrong login information",
+                        Toast.LENGTH_LONG);
                 toast.show();
                 e.printStackTrace();
             }
@@ -81,19 +145,32 @@ public class MainActivity extends AppCompatActivity {
 
 
             if (!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
-
-                Scraper.mainVars.scraper = new ScrapeWebsite(loginUname,
-                        loginPass,
-                        rememberMe.isChecked());
+                loginForm.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                new Thread(() -> {
+                    try {
+                        ScrapeWebsite.getScraper().login(loginUname, loginPass, rememberMe.isChecked());
+                        runOnUiThread(()->{
+                            Intent intent = new Intent(this, MenuActivity.class);
+                            ActivityLauncher.launch(intent);
+                        });
+                    } catch (IOException e) {
+                        runOnUiThread(()->{
+                            progressBar.setVisibility(View.INVISIBLE);
+                            loginForm.setVisibility(View.VISIBLE);
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Wrong login information",
+                                    Toast.LENGTH_LONG);
+                            toast.show();
+                        });
+                        e.printStackTrace();
+                    }
+                }).start();
 
                 if (rememberMe.isChecked())
                     sharedPreferences.edit().putString("username", loginUname)
                             .putString("password", loginPass).apply();
 
-                if (scraper.status) {
-                    Intent intent = new Intent(this, ProfileActivity.class);
-                    startActivity(intent);
-                }
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_LONG);
                 toast.show();
@@ -102,14 +179,18 @@ public class MainActivity extends AppCompatActivity {
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         void startAppRemember() throws IOException{
-            Scraper.mainVars.scraper = new ScrapeWebsite(loginUname,
-                    loginPass,
-                    false);
+            new Thread(() -> {
+                try {
+                    ScrapeWebsite.getScraper().login(loginUname, loginPass, false);
+                    runOnUiThread(()->{
+                        Intent intent = new Intent(this, MenuActivity.class);
+                        ActivityLauncher.launch(intent);
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
-            if (scraper.status) {
-                Intent intent = new Intent(this, MenuActivity.class);
-                startActivity(intent);
-            }
         }
 
     }

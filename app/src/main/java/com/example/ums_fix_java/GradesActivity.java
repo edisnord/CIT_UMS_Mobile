@@ -26,8 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import Scraper.GradeRow;
+import Scraper.ScrapeWebsite;
 import Scraper.SubjectRow;
-import Scraper.mainVars;
+import Scraper.ScrapeWebsite;
 
 public class GradesActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class GradesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_grades);
         Spinner spinner = findViewById(R.id.spinner);
-        List<String> subjectNames = mainVars.subjectRows.stream().map(SubjectRow::toString)
+        List<String> subjectNames = ScrapeWebsite.subjectRows.stream().map(SubjectRow::toString)
                 .distinct().collect(Collectors.toList());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
@@ -59,7 +60,7 @@ public class GradesActivity extends AppCompatActivity {
         Button fetch = findViewById(R.id.fetch);
         fetch.setOnClickListener(view -> {
                     try {
-                        tableRows = mainVars.scraper.getSubjectGrades(spinner.getSelectedItem().toString());
+                        tableRows = ScrapeWebsite.getScraper().getSubjectGrades(spinner.getSelectedItem().toString());
                         totalGrade = tableRows.stream().mapToDouble(GradeRow::getGradeWeight).reduce(0, Double::sum);
                         totalAchieved = tableRows.stream().mapToDouble(GradeRow::getGrade).reduce(0, Double::sum);
 

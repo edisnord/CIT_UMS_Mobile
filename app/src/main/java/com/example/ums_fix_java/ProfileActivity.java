@@ -19,8 +19,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import Scraper.GradeRow;
+import Scraper.ScrapeWebsite;
 import Scraper.SubjectRow;
-import Scraper.mainVars;
+import Scraper.ScrapeWebsite;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -41,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         androidx.appcompat.widget.Toolbar mToolbar = findViewById(R.id.toolbarprf);
         TextView cText = findViewById(R.id.ctext);
 
-        List<String> termNames = mainVars.gradeRows.stream().map(GradeRow::getAcademicYear)
+        List<String> termNames = ScrapeWebsite.gradeRows.stream().map(GradeRow::getAcademicYear)
                 .distinct().collect(Collectors.toList());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
@@ -50,10 +51,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         spinner.setAdapter(adapter);
 
-        String[] fullName = mainVars.fullName.split(" ");
+        String[] fullName = ScrapeWebsite.fullName.split(" ");
         name.setText("Name: " + fullName[0]);
         surname.setText("Surname: " + fullName[1]);
-        email.setText("Email: " + mainVars.userName);
+        email.setText("Email: " + ScrapeWebsite.userName);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +65,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         fetch.setOnClickListener(view -> {
             //Get all subjects retrieved by scraping at the beginning
-            List<String> allSubjects = mainVars.subjectRows.stream().map(SubjectRow::toString).collect(Collectors.toList());
+            List<String> allSubjects = ScrapeWebsite.subjectRows.stream().map(SubjectRow::toString).collect(Collectors.toList());
 
             //Get all subjects whose grades we have scraped
-            List<String> gradedSubjects = mainVars.gradeRows.stream().map(GradeRow::toString).distinct().collect(Collectors.toList());
+            List<String> gradedSubjects = ScrapeWebsite.gradeRows.stream().map(GradeRow::toString).distinct().collect(Collectors.toList());
 
             //Get grades based on element chosen by user
-            List<GradeRow> yearGrades = mainVars.gradeRows.stream()
+            List<GradeRow> yearGrades = ScrapeWebsite.gradeRows.stream()
                     .filter(x -> x.getAcademicYear().equals(spinner.getSelectedItem().toString()))
                     .collect(Collectors.toList());
             //Get classes with incomplete grades
