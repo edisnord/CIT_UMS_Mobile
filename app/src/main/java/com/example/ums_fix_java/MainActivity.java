@@ -16,17 +16,31 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Map;
 
 import Scraper.ScrapeWebsite;
 
 public class MainActivity extends AppCompatActivity {
 
+    String loginUname;
+    String loginPass;
     Button button;
+    boolean mode;
+    SharedPreferences sharedPreferences;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mode = false;
+        sharedPreferences = getSharedPreferences("userLogin" ,MODE_PRIVATE);
+//        sharedPreferences.edit().remove("username").apply();
+        if(!(sharedPreferences.getString("username","").equals("")
+                || sharedPreferences.getString("password", "").equals(""))){
+            loginUname = sharedPreferences.getString("username","");
+            loginPass = sharedPreferences.getString("password", "");
+            mode = true;
+        }
+
+
         super.onCreate(savedInstanceState);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -34,9 +48,19 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.press);
+
+        if(mode){
+            try {
+                startAppRemember();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         button.setOnClickListener(view -> {
             try {
-                startApp();
+                if(!mode)startAppNoRemember();
+                else;
             } catch (IOException e) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Wrong login information", Toast.LENGTH_LONG);
                 toast.show();
@@ -46,26 +70,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    void startApp() throws IOException {
+    void startAppNoRemember() throws IOException {
 
         EditText username = findViewById(R.id.editTextTextPersonName);
         EditText password = findViewById(R.id.editTextTextPassword);
         CheckBox rememberMe = findViewById(R.id.checkBox);
-        SharedPreferences sharedPreferences = getSharedPreferences("cookie" ,MODE_PRIVATE);
-        String test = sharedPreferences.getString("cookie", "");
-        sharedPreferences.edit().remove("cookie").apply();
 
-        String loginUname;
-        String loginPass;
+        loginUname = username.getText().toString();
+        loginPass = password.getText().toString();
 
-        if(!(sharedPreferences.getString("username","").equals("")
-           || sharedPreferences.getString("password", "").equals(""))){
-            loginUname = sharedPreferences.getString("username","");
-            loginPass = sharedPreferences.getString("password", "");
-        } else {
-            loginUname = username.getText().toString();
-            loginPass = password.getText().toString();
-        }
 
             if (!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
 
@@ -86,4 +99,17 @@ public class MainActivity extends AppCompatActivity {
                 toast.show();
             }
         }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        void startAppRemember() throws IOException{
+            Scraper.mainVars.scraper = new ScrapeWebsite(loginUname,
+                    loginPass,
+                    false);
+
+            if (scraper.status) {
+                Intent intent = new Intent(this, MenuActivity.class);
+                startActivity(intent);
+            }
+        }
+
     }
