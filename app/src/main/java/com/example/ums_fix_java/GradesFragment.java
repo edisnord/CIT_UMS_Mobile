@@ -1,12 +1,12 @@
 package com.example.ums_fix_java;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,8 +17,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,37 +26,42 @@ import java.util.stream.Collectors;
 import Scraper.GradeRow;
 import Scraper.ScrapeWebsite;
 import Scraper.SubjectRow;
-import Scraper.ScrapeWebsite;
 
-public class GradesActivity extends AppCompatActivity {
+public class GradesFragment extends Fragment {
 
     double totalGrade;
     double totalAchieved;
     double undefinedPercentage;
 
     List<GradeRow> tableRows;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_grades, null);
+        return root;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
 
         totalGrade = 0;
         totalAchieved = 0;
         undefinedPercentage = 0;
 
-        setContentView(R.layout.activity_grades);
-        Spinner spinner = findViewById(R.id.spinner);
+        Spinner spinner = view.findViewById(R.id.spinner);
         List<String> subjectNames = ScrapeWebsite.subjectRows.stream().map(SubjectRow::toString)
                 .distinct().collect(Collectors.toList());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
                 R.layout.spinner,
                 subjectNames);
 
         spinner.setAdapter(adapter);
 
-        Button fetch = findViewById(R.id.fetch);
-        fetch.setOnClickListener(view -> {
+        Button fetch = view.findViewById(R.id.fetch);
+        fetch.setOnClickListener(viewL -> {
                     try {
                         tableRows = ScrapeWebsite.getScraper().getSubjectGrades(spinner.getSelectedItem().toString());
                         totalGrade = tableRows.stream().mapToDouble(GradeRow::getGradeWeight).reduce(0, Double::sum);
@@ -66,9 +69,9 @@ public class GradesActivity extends AppCompatActivity {
 
                         undefinedPercentage = 100 - totalGrade;
 
-                        TextView gpa = findViewById(R.id.GPA);
-                        TextView grade = findViewById(R.id.Grade);
-                        TextView percentage = findViewById(R.id.Percentage);
+                        TextView gpa = view.findViewById(R.id.GPA);
+                        TextView grade = view.findViewById(R.id.Grade);
+                        TextView percentage = view.findViewById(R.id.Percentage);
                         if(undefinedPercentage == 0) {
                             gpa.setText("GPA: " + new DecimalFormat("#.0").format(totalAchieved / 100 * 4));
                             percentage.setText("Percentage: " + new DecimalFormat("#.0").format(totalAchieved) + "%");
@@ -78,10 +81,10 @@ public class GradesActivity extends AppCompatActivity {
                             percentage.setText("UNDEFINED");
                             grade.setText("UNDEFINED");
                         }
-                        table();
+                        table(view);
 
                     } catch (IOException e) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "??? Error", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(view.getContext(), "??? Error", Toast.LENGTH_SHORT);
                         toast.show();
                         e.printStackTrace();
                     }
@@ -92,72 +95,72 @@ public class GradesActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.N)
-    void table(){
-        TableLayout table = findViewById(R.id.table);
+    void table(View view){
+        TableLayout table = view.findViewById(R.id.table);
 
         ArrayList<View> children = getAllChildren(table);
         if(!children.isEmpty()){
             table.removeAllViews();
         }
         table.setStretchAllColumns(true);
-        TableRow header = new TableRow(this);
-        TextView col1 = new TextView(this);
+        TableRow header = new TableRow(view.getContext());
+        TextView col1 = new TextView(view.getContext());
         col1.setText("Grade Type");
-        col1.setBackground(getDrawable(R.drawable.cell_header));
+        col1.setBackground(view.getContext().getDrawable(R.drawable.cell_header));
         header.addView(col1);
-        TextView col2 = new TextView(this);
+        TextView col2 = new TextView(view.getContext());
         col2.setText("Grade weight");
-        col2.setBackground(getDrawable(R.drawable.cell_header));
+        col2.setBackground(view.getContext().getDrawable(R.drawable.cell_header));
         header.addView(col2);
-        TextView col3 = new TextView(this);
+        TextView col3 = new TextView(view.getContext());
         col3.setText("Your grade");
-        col3.setBackground(getDrawable(R.drawable.cell_header));
+        col3.setBackground(view.getContext().getDrawable(R.drawable.cell_header));
         header.addView(col3);
-        TextView col4 = new TextView(this);
+        TextView col4 = new TextView(view.getContext());
         col4.setText("Date taken");
-        col4.setBackground(getDrawable(R.drawable.cell_header));
+        col4.setBackground(view.getContext().getDrawable(R.drawable.cell_header));
         header.addView(col4);
         table.addView(header);
         for (GradeRow gr: tableRows) {
-            TableRow tabRow = new TableRow(this);
-            TextView tabCol1 = new TextView(this);
+            TableRow tabRow = new TableRow(view.getContext());
+            TextView tabCol1 = new TextView(view.getContext());
             tabCol1.setText(gr.getGradeType());
-            tabCol1.setBackground(getDrawable(R.drawable.cell_rows));
+            tabCol1.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             tabRow.addView(tabCol1);
-            TextView tabCol2 = new TextView(this);
+            TextView tabCol2 = new TextView(view.getContext());
             if(gr.getGradeWeight() == 0) tabCol2.setText("Incomplete");
             else tabCol2.setText(Float.toString(gr.getGradeWeight()));
-            tabCol2.setBackground(getDrawable(R.drawable.cell_rows));
+            tabCol2.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             tabRow.addView(tabCol2);
-            TextView tabCol3 = new TextView(this);
+            TextView tabCol3 = new TextView(view.getContext());
             if(gr.getGradeWeight() == 0) tabCol3.setText("Incomplete");
             else tabCol3.setText(Float.toString(gr.getGrade()));
-            tabCol3.setBackground(getDrawable(R.drawable.cell_rows));
+            tabCol3.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             tabRow.addView(tabCol3);
-            TextView tabCol4 = new TextView(this);
+            TextView tabCol4 = new TextView(view.getContext());
             tabCol4.setText(gr.getDateTaken());
-            tabCol4.setBackground(getDrawable(R.drawable.cell_rows));
+            tabCol4.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             tabRow.addView(tabCol4);
             table.addView(tabRow);
         }
 
         if(undefinedPercentage > 0){
-            TableRow undefRow = new TableRow(this);
-            TextView tvr0 = new TextView(this);
+            TableRow undefRow = new TableRow(view.getContext());
+            TextView tvr0 = new TextView(view.getContext());
             tvr0.setText("To be added");
-            tvr0.setBackground(getDrawable(R.drawable.cell_rows));
+            tvr0.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             undefRow.addView(tvr0);
-            TextView tvr1 = new TextView(this);
+            TextView tvr1 = new TextView(view.getContext());
             tvr1.setText(Double.toString(undefinedPercentage));
-            tvr1.setBackground(getDrawable(R.drawable.cell_rows));
+            tvr1.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             undefRow.addView(tvr1);
-            TextView tvr2 = new TextView(this);
+            TextView tvr2 = new TextView(view.getContext());
             tvr2.setText(Double.toString(undefinedPercentage));
-            tvr2.setBackground(getDrawable(R.drawable.cell_rows));
+            tvr2.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             undefRow.addView(tvr2);
-            TextView tvr3 = new TextView(this);
+            TextView tvr3 = new TextView(view.getContext());
             tvr3.setText("NO DATA");
-            tvr3.setBackground(getDrawable(R.drawable.cell_rows));
+            tvr3.setBackground(view.getContext().getDrawable(R.drawable.cell_rows));
             undefRow.addView(tvr3);
             table.addView(undefRow);
         }

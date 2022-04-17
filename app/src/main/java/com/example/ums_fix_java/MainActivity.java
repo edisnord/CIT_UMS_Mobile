@@ -150,8 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(() -> {
                     try {
                         ScrapeWebsite.getScraper().login(loginUname, loginPass, rememberMe.isChecked());
+                        ScrapeWebsite.getScraper().scrapeGrades();
+                        ScrapeWebsite.getScraper().scrapeSubjects();
                         runOnUiThread(()->{
-                            Intent intent = new Intent(this, MenuActivity.class);
+                            Intent intent = new Intent(this, DrawerMenu.class);
                             ActivityLauncher.launch(intent);
                         });
                     } catch (IOException e) {
@@ -182,8 +184,10 @@ public class MainActivity extends AppCompatActivity {
             new Thread(() -> {
                 try {
                     ScrapeWebsite.getScraper().login(loginUname, loginPass, false);
+                    ScrapeWebsite.getScraper().scrapeGrades();
+                    ScrapeWebsite.getScraper().scrapeSubjects();
                     runOnUiThread(()->{
-                        Intent intent = new Intent(this, MenuActivity.class);
+                        Intent intent = new Intent(this, DrawerMenu.class);
                         ActivityLauncher.launch(intent);
                     });
                 } catch (IOException e) {

@@ -1,16 +1,17 @@
 package com.example.ums_fix_java;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -21,31 +22,34 @@ import java.util.stream.Stream;
 import Scraper.GradeRow;
 import Scraper.ScrapeWebsite;
 import Scraper.SubjectRow;
-import Scraper.ScrapeWebsite;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileFragment extends Fragment {
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_profile, null);
+        return root;
+    }
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        TextView name = findViewById(R.id.Nameprf);
-        TextView surname = findViewById(R.id.Surnameprf);
-        TextView GPA = findViewById(R.id.GPAprf);
-        TextView percentage = findViewById(R.id.Percentageprf);
-        TextView grade = findViewById(R.id.Gradeprf);
-        TextView email = findViewById(R.id.email);
-        Button fetch = findViewById(R.id.fetchAVG);
-        Spinner spinner = findViewById(R.id.spinnerprf);
-        TextView nonSubs = findViewById(R.id.nonSubs);
-        androidx.appcompat.widget.Toolbar mToolbar = findViewById(R.id.toolbarprf);
-        TextView cText = findViewById(R.id.ctext);
+        TextView name = view.findViewById(R.id.Nameprf);
+        TextView surname = view.findViewById(R.id.Surnameprf);
+        TextView GPA = view.findViewById(R.id.GPAprf);
+        TextView percentage = view.findViewById(R.id.Percentageprf);
+        TextView grade = view.findViewById(R.id.Gradeprf);
+        TextView email = view.findViewById(R.id.email);
+        Button fetch = view.findViewById(R.id.fetchAVG);
+        Spinner spinner = view.findViewById(R.id.spinnerprf);
+        TextView nonSubs = view.findViewById(R.id.nonSubs);
+        TextView cText = view.findViewById(R.id.ctext);
 
         List<String> termNames = ScrapeWebsite.gradeRows.stream().map(GradeRow::getAcademicYear)
                 .distinct().collect(Collectors.toList());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
                 R.layout.spinner,
                 termNames);
 
@@ -56,14 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         surname.setText("Surname: " + fullName[1]);
         email.setText("Email: " + ScrapeWebsite.userName);
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        fetch.setOnClickListener(view -> {
+        fetch.setOnClickListener(viewL -> {
             //Get all subjects retrieved by scraping at the beginning
             List<String> allSubjects = ScrapeWebsite.subjectRows.stream().map(SubjectRow::toString).collect(Collectors.toList());
 

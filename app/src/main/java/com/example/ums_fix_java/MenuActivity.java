@@ -20,7 +20,6 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import Scraper.ScrapeWebsite;
-import Scraper.ScrapeWebsite;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -58,7 +57,7 @@ public class MenuActivity extends AppCompatActivity {
                     if (ScrapeWebsite.gradeRows.isEmpty()) ScrapeWebsite.getScraper().scrapeGrades();
                     if (ScrapeWebsite.subjectRows.isEmpty()) ScrapeWebsite.getScraper().scrapeSubjects();
                     runOnUiThread(() -> {
-                        Intent intent1 = new Intent(this, GradesActivity.class);
+                        Intent intent1 = new Intent(this, GradesFragment.class);
                         ActivityLauncher.launch(intent1);
                     });
                 } catch (IOException e) {
@@ -83,7 +82,7 @@ public class MenuActivity extends AppCompatActivity {
                     if (ScrapeWebsite.gradeRows.isEmpty()) ScrapeWebsite.getScraper().scrapeGrades();
                     if (ScrapeWebsite.subjectRows.isEmpty()) ScrapeWebsite.getScraper().scrapeSubjects();
                     runOnUiThread(() -> {
-                        Intent intent = new Intent(this, ProfileActivity.class);
+                        Intent intent = new Intent(this, ProfileFragment.class);
                         ActivityLauncher.launch(intent);
                     });
                 } catch (IOException e) {

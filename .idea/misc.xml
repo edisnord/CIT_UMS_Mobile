@@ -5,11 +5,23 @@
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/drawable/cell_header.xml" value="0.209" />
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/drawable/cell_rows.xml" value="0.209" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/activity_drawer_menu.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/activity_grades.xml" value="0.33" />
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/activity_menu.xml" value="0.28940217391304346" />
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/activity_profile.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/app_bar_drawer_menu.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/content_drawer_menu.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/fragment_gallery.xml" value="0.2015625" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/fragment_grade.xml" value="0.2015625" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/fragment_grades.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/fragment_home.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/fragment_logoff.xml" value="0.33" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/fragment_slideshow.xml" value="0.28940217391304346" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/nav_header_drawer_menu.xml" value="0.67" />
         <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/layout/spinner.xml" value="0.2015625" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/menu/activity_main_drawer.xml" value="0.2015625" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/UMS-Fix-Java/app/src/main/res/menu/drawer_menu.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/activity_grades.xml" value="0.34791666666666665" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
