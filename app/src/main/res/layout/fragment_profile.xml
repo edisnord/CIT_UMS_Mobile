@@ -7,8 +7,8 @@
     tools:context=".ProfileFragment">
 
     <LinearLayout
-        android:layout_width="318dp"
-        android:layout_height="649dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,33 +20,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/Surnameprf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Surname:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select an academic year below:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <Spinner
             android:id="@+id/spinnerprf"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:background="@color/teal_700"
             android:dropDownSelector="@color/teal_700"
@@ -69,7 +81,10 @@
             android:layout_height="wrap_content"
             android:text="GPA:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/Percentageprf"
@@ -77,7 +92,10 @@
             android:layout_height="wrap_content"
             android:text="Percentage:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/Gradeprf"
@@ -85,25 +103,37 @@
             android:layout_height="wrap_content"
             android:text="Grade:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:autoSizeMaxTextSize="22sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
-            android:layout_height="168dp"
-            android:text="This part of the app takes the average grade of all the subjects where all 100% of points have been logged in an academic year, so it might not be a fully accurate depiction of your grade. This is mostly due to professors not always marking courses as incomplete for some students and some professors simply not using the system at all to add grades. For a more detailed view of subject grades please refer to the subjects menu in this app" />
+            android:layout_height="wrap_content"
+            android:text="This part of the app takes the average grade of all the subjects where all 100% of points have been logged in an academic year, so it might not be a fully accurate depiction of your grade. This is mostly due to professors not always marking courses as incomplete for some students and some professors simply not using the system at all to add grades. For a more detailed view of subject grades please refer to the subjects menu in this app"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/ctext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Courses not included in calculation: "
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/nonSubs"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="wrap_content"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform" />
 
     </LinearLayout>
 

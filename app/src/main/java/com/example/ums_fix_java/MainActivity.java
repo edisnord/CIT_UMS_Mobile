@@ -36,12 +36,15 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout loginForm;
     ProgressBar progressBar;
 
+    // Function listens for different responses from the DrawerMenu
     ActivityResultLauncher<Intent> ActivityLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    //If we get the code 10(Logout) from the DrawerActivity, we will keep the app
+                    //open, reset the scraper instance and empty the user grade data
                     if(result.getResultCode() != 10)
                     finishAffinity();
                     else {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+                        //Reset the button click listener to only run the startAppNoRemember function
                         button.setOnClickListener(view -> {
                             ScrapeWebsite.gradeRows = new ArrayList<>();
                             ScrapeWebsite.subjectRows = new ArrayList<>();
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.press);
 
+        //Loading animation
         this.loginForm = findViewById(R.id.loginForm);
         loginForm.setVisibility(View.INVISIBLE);
         this.progressBar = findViewById(R.id.progressBar);
@@ -104,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 ScrapeWebsite.getScraper();
                 runOnUiThread(()->{
+                    //if saved user data was found, start startAppRemember() function,
+
                     if(mode){
                         try {
                             startAppRemember();
@@ -111,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     } else {
+                        //End animation if there is no saved data
                         progressBar.setVisibility(View.INVISIBLE);
                         loginForm.setVisibility(View.VISIBLE);
                     }

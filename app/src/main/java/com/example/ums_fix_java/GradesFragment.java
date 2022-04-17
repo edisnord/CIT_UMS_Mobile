@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -50,6 +51,9 @@ public class GradesFragment extends Fragment {
         totalAchieved = 0;
         undefinedPercentage = 0;
 
+        LinearLayout averages = view.findViewById(R.id.linearLayout);
+        averages.setVisibility(View.INVISIBLE);
+
         Spinner spinner = view.findViewById(R.id.spinner);
         List<String> subjectNames = ScrapeWebsite.subjectRows.stream().map(SubjectRow::toString)
                 .distinct().collect(Collectors.toList());
@@ -63,6 +67,7 @@ public class GradesFragment extends Fragment {
         Button fetch = view.findViewById(R.id.fetch);
         fetch.setOnClickListener(viewL -> {
                     try {
+                        averages.setVisibility(View.VISIBLE);
                         tableRows = ScrapeWebsite.getScraper().getSubjectGrades(spinner.getSelectedItem().toString());
                         totalGrade = tableRows.stream().mapToDouble(GradeRow::getGradeWeight).reduce(0, Double::sum);
                         totalAchieved = tableRows.stream().mapToDouble(GradeRow::getGrade).reduce(0, Double::sum);

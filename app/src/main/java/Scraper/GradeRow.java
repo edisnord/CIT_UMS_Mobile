@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -35,8 +36,7 @@ public class GradeRow{
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String getDateTaken() {
         String defaultRet = "NO DATA";
-        return dateTaken.map(Date::toString)
-                .map(x->x.substring(0, 10) + " " + x.substring(x.length() - 5))
+        return dateTaken.map(x -> new SimpleDateFormat("dd-MM-yy").format(x))
                 .orElse(defaultRet);
     }
 

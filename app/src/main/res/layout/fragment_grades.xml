@@ -32,8 +32,8 @@
 
         <Button
             android:id="@+id/fetch"
-            android:layout_width="146dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/teal_700"
             android:gravity="center"
             android:text="@string/fetchButton"
@@ -47,25 +47,31 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginBottom="32dp"
+        android:gravity="center|top"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="invisible">
 
         <TextView
             android:id="@+id/GPA"
-            android:layout_width="83dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="40dp"
             android:autoSizeTextType="uniform"
+            android:autoText="false"
             android:background="@drawable/cell_rows"
             android:text="GPA: "
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:autoSizeMaxTextSize="20sp"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeTextType="uniform" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -74,16 +80,23 @@
             android:layout_weight="1"
             android:orientation="vertical" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:barrierDirection="left" />
+
         <TextView
             android:id="@+id/Percentage"
-            android:layout_width="182dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginBottom="40dp"
             android:autoSizeTextType="uniform"
             android:background="@drawable/cell_rows"
             android:text="Percentage:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:autoSizeMaxTextSize="20sp"
+            app:autoSizeMinTextSize="16sp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -92,9 +105,14 @@
             android:layout_weight="1"
             android:orientation="vertical" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:barrierDirection="left" />
+
         <TextView
             android:id="@+id/Grade"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="40dp"
@@ -102,7 +120,9 @@
             android:background="@drawable/cell_rows"
             android:text="Grade:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:autoSizeMaxTextSize="20sp"
+            app:autoSizeMinTextSize="16sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
