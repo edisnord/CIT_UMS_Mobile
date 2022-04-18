@@ -10,4 +10,4 @@ This is a simple app i built with the intention of providing a decent mobile exp
 3. UI improvements in the Grades By Subject page, removing the table and creating Fragments to display the information of a subject.
 
 ## How to download
-In the release page of this GitHub repository, you need to enable installation from unknown sources in your settings app first though in order to install the apk file downloaded(the way you do this changes from rom to rom, i would suggest googling how to do it)
+In the release page of this GitHub repository. You need to enable installation from unknown sources in your settings app first though in order to install the apk file downloaded(the way you do this changes from rom to rom, i would suggest googling how to do it)
