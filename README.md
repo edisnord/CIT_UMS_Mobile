@@ -4,7 +4,7 @@ This is a simple app i built with the intention of providing a decent mobile exp
 ## Known issues
 1. Minor UI glitches in smaller screens
 2. Weird SSL certificate error in older versions of Android
-3. Might take a while to load on slow connections(can't make the server return full HTML pages faster...)
+3. Might take a while to load on slow connections(can't make their server return full HTML pages faster...)
 
 ## Possible Future features
 1. Notification support for newly added grades
