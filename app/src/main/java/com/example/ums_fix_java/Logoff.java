@@ -16,15 +16,9 @@ import java.util.Objects;
 
 public class Logoff extends Fragment {
 
-
-    public Logoff() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_logoff, container, false);
     }
 
@@ -33,6 +27,7 @@ public class Logoff extends Fragment {
 
         Button logoff = view.findViewById(R.id.button);
 
+        //Remove username and password from shared preferences, go back to login screen with code 10
         logoff.setOnClickListener(view1 -> {
             SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("userLogin", MODE_PRIVATE);
             sharedPreferences.edit().remove("username").apply();

@@ -46,55 +46,56 @@ public class ProfileFragment extends Fragment {
         TextView nonSubs = view.findViewById(R.id.nonSubs);
         TextView cText = view.findViewById(R.id.ctext);
 
-        List<String> termNames = ScrapeWebsite.gradeRows.stream().map(GradeRow::getAcademicYear)
-                .distinct().collect(Collectors.toList());
-
+        //Get all academic years for which we have grades, create an ArrayAdapter object
+        //which is used to set values in the spinner GUI widget
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
                 R.layout.spinner,
-                termNames);
-
+                ScrapeWebsite.getScraper().gradeRows.stream().map(GradeRow::getAcademicYear)
+                        .distinct().collect(Collectors.toList()));
         spinner.setAdapter(adapter);
 
-        String[] fullName = ScrapeWebsite.fullName.split(" ");
+        //Set name, surname and email from scraping class
+        String[] fullName = ScrapeWebsite.getScraper().fullName.split(" ");
         name.setText("Name: " + fullName[0]);
         surname.setText("Surname: " + fullName[1]);
-        email.setText("Email: " + ScrapeWebsite.userName);
+        email.setText("Email: " + ScrapeWebsite.getScraper().userName);
 
         fetch.setOnClickListener(viewL -> {
-            //Get all subjects retrieved by scraping at the beginning
-            List<String> allSubjects = ScrapeWebsite.subjectRows.stream().map(SubjectRow::toString).collect(Collectors.toList());
+            //Get the names all subjects retrieved by scraping at the beginning
+            List<String> allSubjects = ScrapeWebsite.getScraper().subjectRows.stream().map(SubjectRow::toString).collect(Collectors.toList());
 
-            //Get all subjects whose grades we have scraped
-            List<String> gradedSubjects = ScrapeWebsite.gradeRows.stream().map(GradeRow::toString).distinct().collect(Collectors.toList());
+            //Get the names all subjects whose grades we have scraped
+            List<String> gradedSubjects = ScrapeWebsite.getScraper().gradeRows.stream().map(GradeRow::toString).distinct().collect(Collectors.toList());
 
-            //Get grades based on element chosen by user
-            List<GradeRow> yearGrades = ScrapeWebsite.gradeRows.stream()
+            //Get grades based on year chosen by user
+            List<GradeRow> yearGrades = ScrapeWebsite.getScraper().gradeRows.stream()
                     .filter(x -> x.getAcademicYear().equals(spinner.getSelectedItem().toString()))
                     .collect(Collectors.toList());
-            //Get classes with incomplete grades
-            List<String> incompleteClasses = yearGrades.stream()
-                    .filter(GradeRow::isIncomplete).map(GradeRow::getClassName)
-                    .distinct()
-                    .collect(Collectors.toList());
 
-            incompleteClasses = Stream.concat(incompleteClasses.stream() , allSubjects.stream().filter(x->!gradedSubjects.contains(x))).collect(Collectors.toList());
-
-            //Lists used in lambda expressions should be made final
-            List<String> finalIncompleteClasses = incompleteClasses;
+            //Get classes with incomplete grades, concat with classes with no grades at all
+            List<String> incompleteClasses = Stream.concat(yearGrades.stream()
+                                                                     .filter(GradeRow::isIncomplete)
+                                                                     .map(GradeRow::getClassName)
+                                                                     .distinct(),
+                                                           allSubjects.stream()
+                                                                      .filter(x->!gradedSubjects.contains(x)))
+                                                                      .collect(Collectors.toList());
 
             //Calculate average of all grades, excluding incomplete subjects
             OptionalDouble totalGrade = yearGrades.stream()
                     .mapToDouble(x -> yearGrades.stream()
                             .filter(y -> x.getClassName().equals(y.getClassName()))
-                            .filter(y -> !finalIncompleteClasses.contains(x.getClassName()))
+                            .filter(y -> !incompleteClasses.contains(x.getClassName()))
                             .mapToDouble(GradeRow::getGrade).sum()).distinct().average();
-            //Write out all incomplete subjects
 
+            //Write out all incomplete subjects
             nonSubs.setText(incompleteClasses.stream().collect(Collectors.joining(", ")));
             cText.setVisibility(View.VISIBLE);
             GPA.setVisibility(View.VISIBLE);
+            //Calculate GPA
             GPA.setText("GPA: " + new DecimalFormat("#.0").format(totalGrade.getAsDouble() / 100 * 4));
             percentage.setVisibility(View.VISIBLE);
+            //Calculate percentage
             percentage.setText("Percentage: " + new DecimalFormat("#.0").format(totalGrade.getAsDouble()) + "%");
             grade.setVisibility(View.VISIBLE);
             grade.setText(getGrade(totalGrade.getAsDouble()));
@@ -122,7 +123,7 @@ public class ProfileFragment extends Fragment {
             return ("Grade: D");
         else if (totalAchieved < 50 && totalAchieved >= 0)
             return "Grade: F";
-        else return ("what");
+        else return ("Grade: ERROR");
     }
 
 }

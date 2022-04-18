@@ -1,5 +1,6 @@
 package com.example.ums_fix_java;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ums_fix_java.databinding.ActivityDrawerMenuBinding;
 
+import java.io.IOException;
+
 import Scraper.ScrapeWebsite;
 
 public class DrawerMenu extends AppCompatActivity {
@@ -24,6 +28,7 @@ public class DrawerMenu extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityDrawerMenuBinding binding;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +46,11 @@ public class DrawerMenu extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
         View header = navigationView.getHeaderView(0);
+        //Set the name and email of user in navigation drawer
         TextView name = header.findViewById(R.id.drawerName);
-        name.setText(ScrapeWebsite.fullName);
+        name.setText(ScrapeWebsite.getScraper().fullName);
         TextView mail = header.findViewById(R.id.drawerMail);
-        mail.setText(ScrapeWebsite.userName);
+        mail.setText(ScrapeWebsite.getScraper().userName);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_drawer_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);

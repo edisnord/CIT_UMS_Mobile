@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
                         //Reset the button click listener to only run the startAppNoRemember function
                         button.setOnClickListener(view -> {
-                            ScrapeWebsite.gradeRows = new ArrayList<>();
-                            ScrapeWebsite.subjectRows = new ArrayList<>();
                             try {
                                 startAppNoRemember();
                             } catch (IOException e) {
@@ -106,31 +104,29 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
-            try {
-                ScrapeWebsite.getScraper();
-                runOnUiThread(()->{
-                    //if saved user data was found, start startAppRemember() function,
+            ScrapeWebsite.getScraper();
+            runOnUiThread(()->{
+                //if saved user data was found, start startAppRemember() function,
 
-                    if(mode){
-                        try {
-                            startAppRemember();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        //End animation if there is no saved data
-                        progressBar.setVisibility(View.INVISIBLE);
-                        loginForm.setVisibility(View.VISIBLE);
+                if(mode){
+                    try {
+                        startAppRemember();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                } else {
+                    //End animation if there is no saved data
+                    progressBar.setVisibility(View.INVISIBLE);
+                    loginForm.setVisibility(View.VISIBLE);
+                }
+            });
         }).start();
 
+        //Login button, calls the login function that logs in without
+        //saved data
         button.setOnClickListener(view -> {
             try {
-                if(!mode)startAppNoRemember();
+                startAppNoRemember();
             } catch (IOException e) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Wrong login information",
@@ -148,24 +144,29 @@ public class MainActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.editTextTextPassword);
         CheckBox rememberMe = findViewById(R.id.checkBox);
 
+        //If there is no saved user data, we set these variables to the user input
         loginUname = username.getText().toString();
         loginPass = password.getText().toString();
 
 
             if (!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
+                //start animation
                 loginForm.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
                 new Thread(() -> {
                     try {
-                        ScrapeWebsite.getScraper().login(loginUname, loginPass, rememberMe.isChecked());
+                        //Scrape all necessary data
+                        ScrapeWebsite.getScraper().login(loginUname, loginPass);
                         ScrapeWebsite.getScraper().scrapeGrades();
                         ScrapeWebsite.getScraper().scrapeSubjects();
                         runOnUiThread(()->{
+                            //When done start app
                             Intent intent = new Intent(this, DrawerMenu.class);
                             ActivityLauncher.launch(intent);
                         });
                     } catch (IOException e) {
                         runOnUiThread(()->{
+                            //If scraping fails due to IOException, tell user that their login info is wrong
                             progressBar.setVisibility(View.INVISIBLE);
                             loginForm.setVisibility(View.VISIBLE);
                             Toast toast = Toast.makeText(getApplicationContext(),
@@ -174,9 +175,22 @@ public class MainActivity extends AppCompatActivity {
                             toast.show();
                         });
                         e.printStackTrace();
+                    } catch (ArrayIndexOutOfBoundsException e){
+                        runOnUiThread(()->{
+                            //If scraping fails due to ArrayOutOfBoundsException,
+                            // tell user that there has been a server error
+                            progressBar.setVisibility(View.INVISIBLE);
+                            loginForm.setVisibility(View.VISIBLE);
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "There was an error with the server response, please restart" +
+                                            "the application",
+                                    Toast.LENGTH_LONG);
+                            toast.show();
+                        });
                     }
                 }).start();
 
+                //If the user selected remember me, save their data in the shared preferences
                 if (rememberMe.isChecked())
                     sharedPreferences.edit().putString("username", loginUname)
                             .putString("password", loginPass).apply();
@@ -191,16 +205,40 @@ public class MainActivity extends AppCompatActivity {
         void startAppRemember() throws IOException{
             new Thread(() -> {
                 try {
-                    ScrapeWebsite.getScraper().login(loginUname, loginPass, false);
+                    //Scrape all necessary data
+                    ScrapeWebsite.getScraper().login(loginUname, loginPass);
                     ScrapeWebsite.getScraper().scrapeGrades();
                     ScrapeWebsite.getScraper().scrapeSubjects();
                     runOnUiThread(()->{
+                        //Start app when done
                         Intent intent = new Intent(this, DrawerMenu.class);
                         ActivityLauncher.launch(intent);
                     });
                 } catch (IOException e) {
+                    runOnUiThread(()->{
+                        //If scraping fails due to IOException at this point it's a server error
+                        progressBar.setVisibility(View.INVISIBLE);
+                        loginForm.setVisibility(View.VISIBLE);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "There was an error with the server response, please restart" +
+                                        "the application",
+                                Toast.LENGTH_LONG);
+                        toast.show();
+                    });
                     e.printStackTrace();
-                }
+                } catch (ArrayIndexOutOfBoundsException e){
+                runOnUiThread(()->{
+                    //If scraping fails due to ArrayOutOfBoundsException,
+                    //tell user that there has been a server error
+                    progressBar.setVisibility(View.INVISIBLE);
+                    loginForm.setVisibility(View.VISIBLE);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "There was an error with the server response, please restart" +
+                                    "the application",
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                });
+            }
             }).start();
 
         }
