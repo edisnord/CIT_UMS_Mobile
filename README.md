@@ -11,5 +11,8 @@ This is a simple app i built with the intention of providing a decent mobile exp
 2. Contact page listing all the professors who have added grades on your profile, running the mail creation activity on your preferred mail app when the user decides to mail a professor
 3. UI improvements in the Grades By Subject page, removing the table and creating Fragments to display the information of a subject.
 
-## How to download
-In the release page of this GitHub repository. You need to enable installation from unknown sources in your settings app first though in order to install the apk file downloaded(the way you do this changes from rom to rom, i would suggest googling how to do it)
+## How to download and install
+You download the .apk file from the releases page of this repository, and then you simply open the apk file in your file manager to begin the installation. You need to enable installation from unknown sources in your settings app first though in order to install the apk file downloaded(the way you do this changes from rom to rom, i would suggest googling how to do it).
+
+### NOTE:
+If you have play protect enabled, you will get a warning telling you that this app was made by an unknown developer(big surprise). Please ignore the warning, the app is perfectly safe to install and run
