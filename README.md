@@ -10,4 +10,4 @@ This is a simple app i built with the intention of providing a decent mobile exp
 3. UI improvements in the Grades By Subject page, removing the table and creating Fragments to display the information of a subject.
 
 ## How to download
-In the release page of this GitHub repository, no plans to add to stores in the foreseeable future.
+In the release page of this GitHub repository, no plans to add to any app stores in the foreseeable future.
